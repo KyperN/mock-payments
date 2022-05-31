@@ -1,0 +1,33 @@
+.input-block {
+  margin-top: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+.input-block input {
+  margin-right: 25px;
+  padding: 15px 30px 0 0;
+  font-size: 25px;
+  border-radius: 14px;
+  border: 1px solid rgb(248, 194, 94);
+  text-align: center;
+  margin-bottom: 10px;
+}
+button {
+  margin-top: 25px;
+  padding: 7px 20px;
+  font-size: 20px;
+  border-radius: 5px;
+  background: rgb(248, 156, 94);
+  color: #fff;
+  cursor: pointer;
+  transition-duration: 0.35s;
+  &:hover {
+    letter-spacing: 3px;
+  }
+}
+.inactive {
+  opacity: 0.4;
+}

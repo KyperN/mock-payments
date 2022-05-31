@@ -1,0 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Fira+Sans:ital@0;1&family=Lora:ital@1&family=Nunito+Sans:wght@200&display=swap');
+body {
+  margin: 0;
+  font-family: 'Nunito Sans', sans-serif;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
