@@ -20,9 +20,9 @@ export default function Home() {
     }, 1500);
   };
 
-  // useEffect(() => {
-  //   fetchUserData();
-  // }, []);
+  useEffect(() => {
+    fetchUserData();
+  }, []);
   return (
     <div className="container">
       {loading ? (

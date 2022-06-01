@@ -23,12 +23,10 @@ export default function Login() {
 
   const setName = (e) => {
     setCredentials((prev) => ({ ...prev, name: e.target.value }));
-    console.log(credentials);
   };
 
   const setPassword = (e) => {
     setCredentials((prev) => ({ ...prev, password: e.target.value }));
-    console.log(credentials);
   };
 
   const handleLogin = async () => {
@@ -40,7 +38,6 @@ export default function Login() {
         await axios
           .post('http://localhost:3001/login', credentials)
           .then((res) => {
-            console.log(res.data);
             dispatch({ type: 'SET_USER_DATA', payload: res.data });
           });
         dispatch({ type: 'LOGIN' });

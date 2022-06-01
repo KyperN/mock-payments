@@ -4,7 +4,7 @@ import './Modal.scss';
 import Notification from '../Notification/Notification';
 import { useSelector, useDispatch } from 'react-redux';
 export default function Modal() {
-  const activerUserData = useSelector((state) => state.user.loggedUserData);
+  const activeUserData = useSelector((state) => state.user.loggedUserData);
   const [disabled, setDisabled] = useState(false);
   const [notification, setNotification] = useState({
     open: false,
@@ -21,8 +21,10 @@ export default function Modal() {
   };
 
   const handleAmount = (e) => {
-    if (parseInt(e.target.value) > parseInt(activerUserData.balance)) {
-      console.log(e.target.value, activerUserData.balance);
+    if (
+      parseInt(e.target.value) > parseInt(activeUserData.balance) ||
+      parseInt(activeUserData.balance) <= 0
+    ) {
       setDisabled(true);
       alert('Insufficeint funds');
       e.target.value = '';
@@ -39,13 +41,17 @@ export default function Modal() {
   };
   const handleTransfer = async () => {
     const data = {
-      fromUserId: activerUserData.id,
+      fromUserId: activeUserData.id,
       amount: transferData.amount,
       toUser: transferData.user,
     };
-    if (transferData.user === activerUserData.name) {
+    if (transferData.user === activeUserData.name) {
       notificationHandler('Failed');
       throw new Error('Same user transfer');
+    }
+    if (activeUserData.balance <= 0) {
+      notificationHandler('Failed');
+      throw new Error('Low balance');
     }
     try {
       await axios
@@ -55,14 +61,17 @@ export default function Modal() {
           notificationHandler('Success');
         });
     } catch (err) {
+      setTransferData((prev) => ({ ...prev, amount: '' }));
       displayErr();
     }
+    setTransferData((prev) => ({ ...prev, amount: '' }));
   };
   return (
     <div className="promt">
       <div className="promt-inner">
         <div className="promt-inputs">
           <input
+            value={transferData.amount}
             placholder="Amount"
             onChange={(e) => {
               handleAmount(e);

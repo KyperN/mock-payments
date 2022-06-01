@@ -28,16 +28,15 @@ export default function Registration() {
   };
   const handleRegister = () => {
     try {
-      axios
-        .post('http://localhost:3001/create-user', {
-          name: credentials.name,
-          password: credentials.password,
-          balance: credentials.balance,
-        })
-        .then((res) => console.log(res));
+      axios.post('http://localhost:3001/create-user', {
+        name: credentials.name,
+        password: credentials.password,
+        balance: credentials.balance,
+      });
+
       navigate('/');
     } catch (err) {
-      console.log('fail');
+      return err;
     }
   };
 
