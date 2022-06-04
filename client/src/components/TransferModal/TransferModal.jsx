@@ -1,9 +1,9 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-import './Modal.scss';
+import './TransferModal.scss';
 import Notification from '../Notification/Notification';
 import { useSelector, useDispatch } from 'react-redux';
-export default function Modal() {
+export default function TransferModal() {
   const activeUserData = useSelector((state) => state.user.loggedUserData);
   const [disabled, setDisabled] = useState(false);
   const [notification, setNotification] = useState({
@@ -36,9 +36,7 @@ export default function Modal() {
   const handleUser = (e) => {
     setTransferData((prev) => ({ ...prev, user: e.target.value }));
   };
-  const displayErr = () => {
-    alert('Error occured');
-  };
+
   const handleTransfer = async () => {
     const data = {
       fromUserId: activeUserData.id,
@@ -47,6 +45,7 @@ export default function Modal() {
     };
     if (transferData.user === activeUserData.name) {
       notificationHandler('Failed');
+      setTransferData({ user: '', amount: null });
       throw new Error('Same user transfer');
     }
     if (activeUserData.balance <= 0) {
@@ -59,12 +58,12 @@ export default function Modal() {
         .then((res) => dispatch({ type: 'SET_USER_DATA', payload: res.data }))
         .then(() => {
           notificationHandler('Success');
+          setTransferData({ user: '', amount: '' });
         });
     } catch (err) {
       setTransferData((prev) => ({ ...prev, amount: '' }));
-      displayErr();
+      notificationHandler('Failed');
     }
-    setTransferData((prev) => ({ ...prev, amount: '' }));
   };
   return (
     <div className="promt">
@@ -79,6 +78,7 @@ export default function Modal() {
             type="number"
           />
           <input
+            value={transferData.user}
             onChange={(e) => {
               handleUser(e);
             }}

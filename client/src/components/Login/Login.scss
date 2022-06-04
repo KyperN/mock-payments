@@ -1,26 +1,41 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 .input-block {
-  margin-top: 250px;
+  margin-top: 150px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   position: relative;
+  border: 2px solid #fff;
+  border-radius: 10px;
+  width: 450px;
+  height: 350px;
+  background-color: rgb(211, 203, 203);
 }
 .input-block input {
+  border-left: 2px solid black;
   margin-right: 25px;
   padding: 15px 30px 0 0;
-  font-size: 25px;
+  font-size: 17px;
   border-radius: 14px;
   border: 1px solid rgb(248, 194, 94);
   text-align: center;
   margin-bottom: 10px;
+  text-transform: lowercase;
+  width: 170px;
 }
 button {
+  margin-right: 20px;
   margin-top: 25px;
   padding: 7px 20px;
   font-size: 20px;
   border-radius: 5px;
-  background: rgb(248, 156, 94);
+  background: rgb(139, 211, 240);
   color: #fff;
   cursor: pointer;
   transition-duration: 0.35s;

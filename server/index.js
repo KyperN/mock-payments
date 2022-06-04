@@ -16,9 +16,22 @@ app.listen(PORT, (err) => {
 
 app.get('/user-data', (req, res) => {
   const user_name = req.query.user_name;
-  // const userData = users.filter((elem) => elem.name === user_name);
 
   res.status(200).send(db.users);
+});
+
+app.post('/add-money', async (req, res) => {
+  if (req.body === undefined) {
+    res.status(400).send('Error');
+  }
+  try {
+    const { amount, userId } = req.body;
+    const receivingUser = db.users.get(userId);
+    receivingUser.balance = parseInt(receivingUser.balance) + parseInt(amount);
+    res.status(200).send(receivingUser);
+  } catch (err) {
+    return err;
+  }
 });
 
 app.post('/send-money', async (req, res) => {
@@ -51,8 +64,11 @@ app.post('/send-money', async (req, res) => {
 });
 
 app.post('/create-user', async (req, res) => {
-  let user;
-  user = db.userObject(req.body.name, req.body.password, req.body.balance);
+  const user = db.userObject(
+    req.body.name,
+    req.body.password,
+    req.body.balance
+  );
 
   if (db.getUserByName(user.name) === undefined) {
     return res.status(201).send(db.createUser(user));
@@ -67,7 +83,6 @@ app.post('/login', async (req, res) => {
     return res.status(400).send('No such user');
   }
   if (!(await bcrypt.compare(req.body.password, user.password))) {
-    console.log('Wrong pass');
     return res.status(400).send('Password incorrect');
   }
   try {

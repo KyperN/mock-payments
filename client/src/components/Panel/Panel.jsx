@@ -1,33 +1,48 @@
 import React from 'react';
-import Modal from '../Modal/Modal';
+import TransferModal from '../TransferModal/TransferModal';
+import BalanceModal from '../BalanceModal/BalanceModal';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import './Panel.scss';
 
 export default function Panel() {
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState({ transfer: false, balance: false });
   const userData = useSelector((state) => state.user.loggedUserData);
-  const modalHandler = () => {
-    setVisible(!visible);
+  const modalHandlerTransfer = () => {
+    setVisible((prev) => ({ transfer: !prev.transfer, balance: false }));
+  };
+  const modalHandlerBalance = () => {
+    setVisible((prev) => ({
+      transfer: prev.transfer,
+      balance: !prev.balance,
+    }));
   };
   return (
     <div className="user-panel">
       <h1 className="welcome">Welcome {userData.name} </h1>
       <p>Your current balance:</p>
-      <div
-        style={visible ? { opacity: 0.2 } : { opacity: 1 }}
-        className="user-panel-content">
+      <div className="user-panel-content">
         <div className="user-panel-item">
           <h1>$ {userData.balance}</h1>
         </div>
       </div>
       <div
-        style={visible ? { display: 'flex' } : { display: 'none' }}
+        style={
+          visible.transfer || visible.balance
+            ? { display: 'flex' }
+            : { display: 'none' }
+        }
         className="modal">
-        <Modal />
+        {visible.transfer ? <TransferModal /> : <BalanceModal />}
+      </div>
+      <div className="modal"></div>
+      <div className="user-panel-control">
+        <button onClick={modalHandlerTransfer}>+</button>
       </div>
       <div className="user-panel-control">
-        <button onClick={modalHandler}>+</button>
+        <button onClick={modalHandlerBalance} className="money">
+          Add money
+        </button>
       </div>
     </div>
   );

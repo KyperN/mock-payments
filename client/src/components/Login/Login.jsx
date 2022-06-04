@@ -39,7 +39,8 @@ export default function Login() {
           .post('http://localhost:3001/login', credentials)
           .then((res) => {
             dispatch({ type: 'SET_USER_DATA', payload: res.data });
-          });
+          })
+          .then((res) => console.log(res));
         dispatch({ type: 'LOGIN' });
         dispatch({ type: 'LOADING' });
         setTimeout(() => {
@@ -54,31 +55,33 @@ export default function Login() {
   };
 
   return (
-    <div className={'input-block'}>
-      {loading ? (
-        <Loader />
-      ) : (
-        <>
-          <input
-            onChange={(e) => {
-              setName(e);
-            }}
-            placeholder="Username"
-            type="text"
-          />
-          <input
-            onChange={(e) => {
-              setPassword(e);
-            }}
-            placeholder="Password"
-            type="password"
-          />
-          <button onClick={handleLogin}>Login</button>
-          <Link to="/register">
-            <button>Register</button>
-          </Link>
-        </>
-      )}
+    <div className="container">
+      <div className="input-block">
+        {loading ? (
+          <Loader />
+        ) : (
+          <>
+            <input
+              onChange={(e) => {
+                setName(e);
+              }}
+              placeholder="Username"
+              type="text"
+            />
+            <input
+              onChange={(e) => {
+                setPassword(e);
+              }}
+              placeholder="Password"
+              type="password"
+            />
+            <button onClick={handleLogin}>Login</button>
+            <Link to="/register">
+              <button>Register</button>
+            </Link>
+          </>
+        )}
+      </div>
     </div>
   );
 }

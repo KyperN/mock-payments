@@ -11,6 +11,10 @@ export default function Registration() {
     balance: null,
   });
   const navigate = useNavigate();
+
+  const displayErr = (msg) => {
+    alert(msg);
+  };
   const handleUsername = (e) => {
     setCredentials((prev) => {
       return { ...prev, name: e.target.value };
@@ -26,26 +30,27 @@ export default function Registration() {
       return { ...prev, balance: e.target.value };
     });
   };
-  const handleRegister = () => {
+  const handleRegister = async () => {
     try {
-      axios.post('http://localhost:3001/create-user', {
-        name: credentials.name,
-        password: credentials.password,
-        balance: credentials.balance,
-      });
-
-      navigate('/');
+      await axios
+        .post('http://localhost:3001/create-user', {
+          name: credentials.name,
+          password: credentials.password,
+          balance: credentials.balance,
+        })
+        .then((res) => console.log(res))
+        .then(() => {
+          navigate('/');
+        });
     } catch (err) {
+      displayErr('User exists');
       return err;
     }
   };
 
-  const displayErr = () => {
-    alert('Check your inputs');
-  };
   const validate = () => {
-    !credentials.name || !credentials.password
-      ? displayErr()
+    !credentials.name || !credentials.password || !credentials.balance
+      ? displayErr('Check input fields')
       : handleRegister();
   };
 
