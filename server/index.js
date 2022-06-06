@@ -2,7 +2,6 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const app = express();
 const PORT = 3001;
-const cors = require('cors');
 
 const db = require('./db.js');
 
@@ -12,12 +11,6 @@ app.listen(PORT, (err) => {
     return err;
   }
   console.log('server running');
-});
-
-app.get('/user-data', (req, res) => {
-  const user_name = req.query.user_name;
-
-  res.status(200).send(db.users);
 });
 
 app.post('/add-money', async (req, res) => {
@@ -38,11 +31,10 @@ app.post('/send-money', async (req, res) => {
   const { fromUserId, amount, toUser } = req.body;
   let userReceiving;
   const userSending = db.users.get(fromUserId);
-  console.log('Sending: ', userSending);
+
   db.users.forEach((user) =>
-    user.name === toUser ? (userReceiving = user) : null
+    user.name === toUser ? (userReceiving = user) : undefined
   );
-  console.log('Receiving: ', userReceiving);
 
   if (fromUserId === undefined || userReceiving === undefined) {
     return res.status(400).send('User error');
@@ -50,16 +42,13 @@ app.post('/send-money', async (req, res) => {
 
   userSending.balance = parseInt(userSending.balance) - parseInt(amount);
   userReceiving.balance = parseInt(userReceiving.balance) + parseInt(amount);
-  console.log(
-    'AFTER CHANGES  !!!',
-    'Balance sending: ',
-    userSending.balance,
-    'Balance receiving: ',
-    userReceiving.balance
-  );
+  const sendingHistory = { to: userReceiving.name, amount: amount };
+  const receivingHistory = { from: userSending.name, amount: amount };
   db.updateBalance(userSending.id, userSending);
   db.updateBalance(userReceiving.id, userReceiving);
-  console.log('updated');
+  db.updateHistory(userSending.id, userSending, sendingHistory);
+  db.updateHistory(userReceiving.id, userReceiving, receivingHistory);
+
   res.status(200).send(userSending);
 });
 
@@ -73,13 +62,13 @@ app.post('/create-user', async (req, res) => {
   if (db.getUserByName(user.name) === undefined) {
     return res.status(201).send(db.createUser(user));
   }
+
   return res.status(400).send('User already exists');
 });
 
 app.post('/login', async (req, res) => {
   const user = db.getUserByName(req.body.name);
   if (user === undefined) {
-    console.log('no user');
     return res.status(400).send('No such user');
   }
   if (!(await bcrypt.compare(req.body.password, user.password))) {

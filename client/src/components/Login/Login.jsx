@@ -39,8 +39,8 @@ export default function Login() {
           .post('http://localhost:3001/login', credentials)
           .then((res) => {
             dispatch({ type: 'SET_USER_DATA', payload: res.data });
-          })
-          .then((res) => console.log(res));
+          });
+
         dispatch({ type: 'LOGIN' });
         dispatch({ type: 'LOADING' });
         setTimeout(() => {

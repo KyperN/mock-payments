@@ -10,7 +10,7 @@ export default function TransferModal() {
     open: false,
     message: '',
   });
-  const [transferData, setTransferData] = useState({ user: '', amount: null });
+  const [transferData, setTransferData] = useState({ user: '', amount: '' });
   const dispatch = useDispatch();
 
   const notificationHandler = (message) => {

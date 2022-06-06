@@ -13,7 +13,13 @@ const userObject = (name, password, balance) => {
     throw new Error('Balance is undefined');
   }
 
-  return { name: name, password: password, balance: balance, id: null };
+  return {
+    name: name,
+    password: password,
+    balance: balance,
+    id: null,
+    history: [],
+  };
 };
 
 const createUser = async (user) => {
@@ -33,7 +39,11 @@ const saveUser = (user) => {
 const updateBalance = (id, user) => {
   users.set(id, user);
 };
-
+const updateHistory = (id, user, record) => {
+  user.history.push(record);
+  console.log('RECORD =>', record);
+  users.set(id, user);
+};
 const getUserId = (id) => {
   return users.get(id);
 };
@@ -47,11 +57,6 @@ const getUserByName = (name) => {
   return undefined;
 };
 
-// saveUser(userObject('Kyper', '123', 200));
-// saveUser(userObject('Sanya', '321', 201));
-
-// checkCredentials('Kyper', '1223');
-
 module.exports.users = users;
 module.exports.saveUser = saveUser;
 module.exports.getUserId = getUserId;
@@ -59,3 +64,4 @@ module.exports.userObject = userObject;
 module.exports.createUser = createUser;
 module.exports.getUserByName = getUserByName;
 module.exports.updateBalance = updateBalance;
+module.exports.updateHistory = updateHistory;
