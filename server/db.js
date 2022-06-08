@@ -41,7 +41,7 @@ const updateBalance = (id, user) => {
 };
 const updateHistory = (id, user, record) => {
   user.history.push(record);
-  console.log('RECORD =>', record);
+
   users.set(id, user);
 };
 const getUserId = (id) => {

@@ -21,6 +21,9 @@ app.post('/add-money', async (req, res) => {
     const { amount, userId } = req.body;
     const receivingUser = db.users.get(userId);
     receivingUser.balance = parseInt(receivingUser.balance) + parseInt(amount);
+    const history = { topup: true, amount: amount };
+    db.updateBalance(receivingUser.id, receivingUser);
+    db.updateHistory(receivingUser.id, receivingUser, history);
     res.status(200).send(receivingUser);
   } catch (err) {
     return err;

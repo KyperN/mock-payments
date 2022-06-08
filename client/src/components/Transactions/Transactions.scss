@@ -1,0 +1,16 @@
+.transactions {
+  .history {
+    font-size: 20px;
+    margin-top: 25px;
+    text-align: center;
+    cursor: pointer;
+    transition-duration: 0.5s;
+    &:hover {
+      letter-spacing: 7.5px;
+      color: #fff;
+    }
+  }
+  .transaction {
+    text-align: center;
+  }
+}

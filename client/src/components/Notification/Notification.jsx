@@ -1,7 +1,6 @@
 import React from 'react';
 import './Notification.scss';
 export default function Notification({ message }) {
-  console.log(message);
   return (
     <div className="notification">
       <div

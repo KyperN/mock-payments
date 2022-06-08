@@ -4,6 +4,8 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Loader from '../Loader/Loader';
 import Panel from '../Panel/Panel';
+import '../Transactions/Transactions';
+import Transactions from '../Transactions/Transactions';
 export default function Home() {
   const dispatch = useDispatch();
 
@@ -33,9 +35,11 @@ export default function Home() {
       ) : (
         <Panel />
       )}
+
       <div className="btn">
         <button onClick={handleLogout}>Logout</button>
       </div>
+      <Transactions />
     </div>
   );
 }

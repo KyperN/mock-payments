@@ -21,6 +21,9 @@ export default function TransferModal() {
   };
 
   const handleAmount = (e) => {
+    if (e.target.value === '0') {
+      e.target.value = '';
+    }
     if (
       parseInt(e.target.value) > parseInt(activeUserData.balance) ||
       parseInt(activeUserData.balance) <= 0
